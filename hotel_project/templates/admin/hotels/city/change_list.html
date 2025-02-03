@@ -1,0 +1,9 @@
+{% extends "admin/change_list.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>city List</h1>
+    <a href="/admin/hotels/city/upload-csv/" class="button">Upload a CSV File</a>    
+    {{ block.super }}
+{% endblock %}
