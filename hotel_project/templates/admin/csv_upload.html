@@ -3,6 +3,9 @@
 {% block content %}
 <div>
     <h1>CSV Upload</h1>
+    {% if error %}
+    <div class="error-message" style="color: red;">{{ error }}</div>
+    {% endif %}
     <form action="." method="post" enctype="multipart/form-data">
         {{ form.as_p }}
         {% csrf_token %}
