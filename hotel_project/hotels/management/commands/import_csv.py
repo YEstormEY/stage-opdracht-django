@@ -89,7 +89,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write("Importing from local files...")
             city_path = options.get('city_path')
-            hotel_path = options.get('hotel_path')  # Changed key to 'hotel_path' for consistency
+            hotel_path = options.get('hotel_path')
             if city_path:
                 self.import_cities_from_file(city_path)
             if hotel_path:
@@ -107,7 +107,7 @@ class Command(BaseCommand):
         """
         try:
             response = requests.get(url, auth=auth)
-            response.raise_for_status()  # Raise an HTTPError if the HTTP request returned an unsuccessful status code
+            response.raise_for_status()
             content = response.content.decode('utf-8')
             self.import_cities_from_string(content)
         except Exception as e:
