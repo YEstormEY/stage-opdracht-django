@@ -66,23 +66,26 @@ Key components include:
 ```
 hotel_project/
 ├── hotels/
-│   ├── migrations/
-│   ├── templates/
-│   │   ├── hotels/
-│   │   │   ├── city_list.html
-│   │   │   └── hotel_list.html
-│   │   └── admin/
-│   │       ├── city/
-│   │       │   └── change_list.html
-│   │       ├── hotel/
-│   │       │   └── change_list.html
-│   │       └── csv_upload.html
-│   ├── management/
-│   │   └── commands/
-│   │       └── import_csv.py
-│   ├── models.py
-│   ├── views.py
-│   └── admin.py
+│   ├── migrations/
+│   ├── management/
+│   │   └── commands/
+│   │       └── import_csv.py
+│   ├── tests/
+│   │   ├── test_import_csv.py
+│   │   └── test_admin.py
+│   ├── models.py
+│   ├── views.py
+│   └── admin.py
+├── templates/
+│   │   ├── hotels/
+│   │   │   ├── city_list.html
+│   │   │   └── hotel_list.html
+│   │   └── admin/
+│   │       ├── city/
+│   │       │   └── change_list.html
+│   │       ├── hotel/
+│   │       │   └── change_list.html
+│   │       └── csv_upload.html
 ├── manage.py
 └── requirements.txt
 ```
@@ -160,4 +163,27 @@ Django’s admin interface, accessible at [/admin](https://docs.djangoproject.co
 
 - **CSV Upload:**  
   The `admin/csv_upload.html` template enables direct CSV file uploads from the admin interface, streamlining data import with built-in error reporting using Django's messages framework. 
+
+## Running Tests
+
+This project includes a suite of unit tests to ensure the correct functionality of the CSV import logic and the views.
+
+### To run the tests:
+
+1. Activate your virtual environment and install dependencies:
+   ```bash
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+2. Run the Django test runner:
+   ```bash
+   python manage.py test
+   ```
+
+3. (Optional) To view test coverage, you can run:
+   ```bash
+   coverage run --source=. manage.py test
+   coverage report
+   ```
 
