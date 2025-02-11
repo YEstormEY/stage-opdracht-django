@@ -239,7 +239,3 @@ This project includes a suite of unit tests for both the Django backend and Reac
    ```bash
    npm test
    ```
-
----
-
-This updated README integrates the frontend interaction details, clarifies instructions for both developers and users, and improves overall readability. Let me know if you'd like further refinements! 
