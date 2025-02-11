@@ -40,7 +40,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#f7fafc", padding: "1rem" }}>
+    <div className="min-h-screen" style={{ padding: "1rem" }}>
       {page === "select" && (
         <CitySelectPage cities={cities} error={error} onSelectCity={handleSelectCity} />
       )}
