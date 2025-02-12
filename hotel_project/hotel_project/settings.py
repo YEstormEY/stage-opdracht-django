@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSV_IMPORT_USERNAME = os.environ.get("CSV_IMPORT_USERNAME", "python-demo")
+CSV_IMPORT_PASSWORD = os.environ.get("CSV_IMPORT_PASSWORD", "claw30_bumps")
 
 # Application definition
 

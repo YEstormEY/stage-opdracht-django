@@ -102,7 +102,51 @@ Follow these steps to set up the backend and frontend:
 
    The React application can be accessed at `http://localhost:3000`. Ensure the backend (Django) is running at the same time to provide the required APIs.
 
----
+## CSV Import procedure and authentication
+
+This project uses a custom Django management command to import CSV data. The command supports two modes:
+
+- **HTTP Mode**: The CSV files are fetched from a remote server using authenticated HTTP.
+- **File Mode**: CSV files are imported from local storage.
+
+### Provided CSV Data
+- **City CSV URL**: `http://rebecca.maykinmedia.nl/djangocase/city.csv`
+- **Hotel CSV URL**: `http://rebecca.maykinmedia.nl/djangocase/hotel.csv`
+- **Username**: `python-demo`
+- **Password**: `claw30_bumps`
+
+### Steps:
+
+1. **Configure Credentials:**
+   - In your `settings.py`, ensure the CSV credentials are set as shown above or via environment variables:
+     ```python
+     CSV_IMPORT_USERNAME = os.environ.get("CSV_IMPORT_USERNAME", "python-demo")
+     CSV_IMPORT_PASSWORD = os.environ.get("CSV_IMPORT_PASSWORD", "claw30_bumps")
+     ```
+
+2. **Running the Command via HTTP:**
+   - Open your terminal and execute:
+     ```bash
+     python manage.py import_csv --mode=http \
+         --city-url="http://rebecca.maykinmedia.nl/djangocase/city.csv" \
+         --hotel-url="http://rebecca.maykinmedia.nl/djangocase/hotel.csv"
+     ```
+   - When prompted, enter the credentials:
+     ```
+     Please provide your system credentials to run the import command.
+     Username: python-demo
+     Password: claw30_bumps
+     ```
+
+3. **Alternate Mode – File Import (if HTTP import is not feasible):**
+   - If necessary, place your CSV files locally and use:
+     ```bash
+     python manage.py import_csv --mode=file \
+         --city-path="/path/to/city.csv" \
+         --hotel-path="/path/to/hotel.csv"
+     ```
+
+This approach ensures both secure HTTP requests (using basic authentication) and restricts the execution of the command using system credentials.
 
 ## Project Structure
 
@@ -172,9 +216,10 @@ This project includes a custom Django management command for importing city and 
 
 - **Import via HTTP:**
   ```bash
-  python manage.py import_csv --mode=http \
-      --city-url="http://example.com/city.csv" \
-      --hotel-url="http://example.com/hotel.csv"
+   python manage.py import_csv --mode=http \
+      --city-url="http://rebecca.maykinmedia.nl/djangocase/city.csv" \
+      --hotel-url="http://rebecca.maykinmedia.nl/djangocase/hotel.csv"
+
   ```
 
 - **Import from Local Files:**
