@@ -129,9 +129,13 @@ hotel_project/
 │   ├── serializers.py
 │   └── ..
 ├── templates/               # Django templates
-│   ├── hotels/
-│   │   ├── city_list.html
-│   │   └── hotel_list.html
+│   ├── admin/
+│   │   ├── hotels/
+│   │   │   ├── city/
+│   │   │   │   ├── change_list.html
+│   │   │   └── hotel/
+│   │   │       ├── change_list.html
+│   │   └── csv_upload.html
 ├── static/                  # Django static files
 │   ├── css/
 │   ├── js/
