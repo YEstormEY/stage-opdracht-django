@@ -1,5 +1,10 @@
-# Node modules
-node_modules/
+# Ignore Python virtual environments
+env/
+venv/
+*.venv/
+ENV/
+env.bak/
+.Python
 
-# Environment files (you’d normally not commit secrets)
+# Ignore environment configuration files
 .env
