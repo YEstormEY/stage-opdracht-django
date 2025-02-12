@@ -153,6 +153,9 @@ hotel_project/
     │   │   └── HotelsPage.js
     │   ├── styles/
     │   │   └── styles.css
+    │   └── tests/
+    │       ├── CitySelectPage.test.js
+    │       └── HotelsPage.test.js
     └── ...
 ```
 
