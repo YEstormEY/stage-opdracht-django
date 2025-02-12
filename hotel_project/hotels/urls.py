@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import HotelView
+from .api_views import city_list, hotel_list
+from .views import CityView, HotelInCityView
 
 urlpatterns = [
-    path('hotels/', HotelView.as_view(), name='hotel_list'),
+    path('api/cities/', city_list, name='api_city_list'),
+    path('api/hotels/<str:code>', hotel_list, name='api_hotel_list'),
 ]
