@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSV_IMPORT_USERNAME = os.environ.get("CSV_IMPORT_USERNAME", "python-demo")
+CSV_IMPORT_PASSWORD = os.environ.get("CSV_IMPORT_PASSWORD", "claw30_bumps")
 
 # Application definition
 
@@ -39,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hotels',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'hotel_project.urls'
@@ -126,3 +131,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CORS settings
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]

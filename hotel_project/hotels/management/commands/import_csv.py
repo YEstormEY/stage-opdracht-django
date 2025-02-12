@@ -1,17 +1,22 @@
 import csv
 import io
 import requests
+import getpass  # For secure password input in the terminal
+import sys
+
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from hotels.models import City, Hotel
+
 
 class Command(BaseCommand):
     """
     Management command for importing CSV data into the City and Hotel models.
-    
+   
     This command supports two modes:
         - "http" mode: fetches CSV files via authenticated HTTP
         - "file" mode: reads local CSV files
-        
+       
     The expected CSV format is:
       - City CSV:  CITY_CODE;NAME
       - Hotel CSV: CITY_CODE;HOTEL_CODE;NAME
@@ -32,7 +37,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Add custom command arguments to the parser.
-        
+       
         Args:
             parser (argparse.ArgumentParser): The argument parser used to parse command options.
         """
@@ -67,12 +72,30 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         """
         Main command handler that triggers the CSV import based on the provided options.
-        
+       
         Args:
             *args: positional arguments
             **kwargs: Command-line arguments including mode, city URL/PATH, and hotel URL/PATH
         """
-        # Retrieve the options dictionary
+        # Retrieve the expected credentials from settings
+        expected_username = getattr(settings, "CSV_IMPORT_USERNAME", None)
+        expected_password = getattr(settings, "CSV_IMPORT_PASSWORD", None)
+        if not expected_username or not expected_password:
+            self.stdout.write(self.style.ERROR("CSV import credentials are not configured in settings."))
+            sys.exit(1)
+
+        # Prompt for system credentials to restrict command usage to authorized users
+        self.stdout.write("Please provide your system credentials to run the import command.")
+        input_username = input("Username: ")
+        input_password = getpass.getpass("Password: ")
+
+        if input_username != expected_username or input_password != expected_password:
+            self.stdout.write(self.style.ERROR("Invalid credentials. Access denied."))
+            sys.exit(1)
+
+        self.stdout.write(self.style.SUCCESS("Credentials validated. Proceeding with CSV import..."))
+
+        # Retrieve the options dictionary and determine the mode
         options = kwargs
         mode = options.get('mode')
 
@@ -80,8 +103,9 @@ class Command(BaseCommand):
             self.stdout.write("Importing via authenticated HTTP...")
             city_url = options.get('city_url')
             hotel_url = options.get('hotel_url')
-            # Hardcoded credentials for demo purposes
-            auth = ('python-demo', 'claw30_bumps')
+            # Use the validated credentials for HTTP basic authentication.
+            # See: [HTTP Basic Auth with requests](https://docs.python-requests.org/en/latest/user/authentication/#basic-authentication)
+            auth = (expected_username, expected_password)
             if city_url:
                 self.import_cities_from_url(city_url, auth)
             if hotel_url:
@@ -89,7 +113,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write("Importing from local files...")
             city_path = options.get('city_path')
-            hotel_path = options.get('hotel_path')  # Changed key to 'hotel_path' for consistency
+            hotel_path = options.get('hotel_path')
             if city_path:
                 self.import_cities_from_file(city_path)
             if hotel_path:
@@ -100,14 +124,14 @@ class Command(BaseCommand):
     def import_cities_from_url(self, url, auth):
         """
         Fetches and imports city data from a CSV file via an HTTP request.
-        
+       
         Args:
             url (str): The URL of the city CSV file.
             auth (tuple): A tuple containing the username and password for HTTP basic authentication
         """
         try:
             response = requests.get(url, auth=auth)
-            response.raise_for_status()  # Raise an HTTPError if the HTTP request returned an unsuccessful status code
+            response.raise_for_status()
             content = response.content.decode('utf-8')
             self.import_cities_from_string(content)
         except Exception as e:
@@ -116,7 +140,7 @@ class Command(BaseCommand):
     def import_hotels_from_url(self, url, auth):
         """
         Fetches and imports hotel data from a CSV file via an HTTP request.
-        
+       
         Args:
             url (str): The URL of the hotel CSV file.
             auth (tuple): A tuple containing the username and password for HTTP basic authentication
@@ -132,7 +156,7 @@ class Command(BaseCommand):
     def import_cities_from_file(self, path):
         """
         Reads and imports city data from a local CSV file.
-        
+       
         Args:
             path (str): The local file path of the city CSV file.
         """
@@ -146,7 +170,7 @@ class Command(BaseCommand):
     def import_hotels_from_file(self, path):
         """
         Reads and imports hotel data from a local CSV file.
-        
+       
         Args:
             path (str): The local file path of the hotel CSV file.
         """
@@ -156,14 +180,14 @@ class Command(BaseCommand):
             self.import_hotels_from_string(content)
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"Error reading hotel CSV file: {e}"))
-            
+
     def import_cities_from_string(self, csv_string):
         """
         Parses a CSV string and imports each valid row as a new City.
-
+       
         Args:
             csv_string (str): The CSV data as a string.
-            
+           
         Expected CSV Format:
             CITY_CODE;NAME
         """
@@ -191,10 +215,10 @@ class Command(BaseCommand):
     def import_hotels_from_string(self, csv_string):
         """
         Parses a CSV string and imports each valid row as a new Hotel, linking it to its City.
-
+       
         Args:
             csv_string (str): The CSV data as a string.
-            
+           
         Expected CSV Format:
             CITY_CODE;HOTEL_CODE;NAME
         """
