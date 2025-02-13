@@ -7,6 +7,7 @@ This project is a Django-based hotel and city management system. It allows for m
 - [Overview](#overview)
 - [Features](#features)
 - [Installation and Setup](#installation-and-setup)
+- [CSV import procedure](#CSV-Import-procedure-and-authentication)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
   - [Management Commands](#management-commands)
