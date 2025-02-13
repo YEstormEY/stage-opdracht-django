@@ -54,7 +54,7 @@ Follow these steps to set up the backend and frontend:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://example.com/your-repo.git
+   git clone https://github.com/YEstormEY/stage-opdracht-django
    cd your-repo
    ```
 
